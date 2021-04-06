@@ -11,6 +11,15 @@ url-or-module-name: either the public url of the node js module or a module name
 
 autoload: (optional) boolean:  true if you want this module to be loaded automatically when the plv8 extension starts up, otherwise false
 ```
+Sample function:
+```
+create or replace function test_underscore()
+returns json as $$
+    const _ = require('https://cdn.jsdelivr.net/npm/underscore@1.12.1/underscore-min.js');
+    const retval = _.map([1, 2, 3], function(num){ return num * 3; });
+    return retval;
+$$ language plv8;
+```
 ## Make writing Postgreqsql modules fun again
 Can you write JavaScript in your sleep?  Me too.
 Can you write PlpgSql queries to save your life?  Me either.
