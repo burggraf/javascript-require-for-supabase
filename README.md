@@ -7,9 +7,11 @@ const module_name = require(<url-or-module-name>, <autoload>);
 ```
 where
 ```
-url-or-module-name: either the public url of the node js module or a module name you've put into the plv8_js_modules table manually.
+url-or-module-name: 
+either the public url of the node js module or a module name you've put into the plv8_js_modules table manually.
 
-autoload: (optional) boolean:  true if you want this module to be loaded automatically when the plv8 extension starts up, otherwise false
+autoload: 
+(optional) boolean:  true if you want this module to be loaded automatically when the plv8 extension starts up, otherwise false
 ```
 Sample function:
 ```
