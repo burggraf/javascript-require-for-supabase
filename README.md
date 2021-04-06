@@ -15,8 +15,7 @@ autoload: (optional) boolean:  true if you want this module to be loaded automat
 Can you write JavaScript in your sleep?  Me too.
 Can you write PlpgSql queries to save your life?  Me either.
 
-Enter our masked hero from heaven:  plv8
-https://plv8.github.io/
+Enter our masked hero from heaven:  [PLV8](https://plv8.github.io)
 
 So how do I write nifty JavaScript modules for Supabase / Postgres?
 
@@ -73,5 +72,25 @@ The first time you call require(url) the following stuff happens:
 2.  We check to see if the url (or module name if you loaded it manually) exists in the plv8_js_modules table.  If it does, we load the source for the module from the database and then eval() it.  Yes, we're using eval(), and that's how this is all possible.  We know about the security vulnerabilities with eval() but in this case, it's a necessary evil.  If you've got a better way, hit me up on GitHub.
 3.  If the module isn't in our plv8_js_modules table, we use the http_get() function from [pgsql-http](https://github.com/pramsey/pgsql-http) to load the source into a variable, then we store it in the plv8_js_modules for later.  Later when we need it, we can get it from the database, then cache it.
 
+So it goes: 
+1.  Are you in the cache?  Load you now!
+2.  Are you in the database?  Load you from the database and cache you for next time!
+3.  First time being called, ever?  We'll load you over http, write you to the database, and you're all set and loaded for next time!
 
-5.  
+If you call require(url, true) that "true" parameter means "autoload this module" so that it gets loaded into the cache when PLV8 starts up. Only do this with modules you need to have ready to go immediately.  False essentially lazy-loads this module the first time it's called after startup.
+
+## Requirements:
+1.  Supabase database (or any Postgresql database, probably, as long as it's a current-enough version).
+2.  The [PLV8](https://plv8.github.io) extension loaded.  (If you're on Supabase, this is easy as described above.  If you're not, you can read up on how to do that with your Postgresql databse on the PLV8 site.)
+3.  The [pgsql-http](https://github.com/pramsey/pgsql-http) extension loaded.  (Same issues as #2 above.)
+4.  **alter database postgres set plv8.start_proc to plv8_require;**  (This needs to be run once and it's in the javascript-require-for-supabase.sql script.)
+5.  **plv8_js_modules** table (Again, this is in the javascript-require-for-supabase.sql script.)
+
+## Troubleshooting
+If you need to reload a module for some reason, just remove the module's entry from your **plv8_js_modules** table.  Or just wipe it out:  **delete from plv8_js_modules;**
+
+Sometimes a module won't work.  If you're using the minified version, try the non-minified version of the library.  Or vice-versa.  Not every library is going to work, especailly anything that requires a DOM, or access to hardware, or things like socket.io.  This is just basic JavsScript stuff -- it's not going dispense Pepsi and shoot out rainbows.  But it's still very cool and will save you eons of programming time.
+
+## Credits
+This is based on the great work of Ryan McGrath here:  [Deep Dive Into PLV8](https://rymc.io/blog/2016/a-deep-dive-into-plv8)
+
