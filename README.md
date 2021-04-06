@@ -48,7 +48,7 @@ Now, you've got all that JavaScript goodness flowing, and it hits you -- What?  
 
 Enter **javascript-require-for-supabase**.
 
-Run the SQL contained in javascript-require-for-supabase.sql, and now you can use 'require()'.  Since you don't have access to a file system, though you can't use npm install.  So we need to have a way to load those neato node_modules.  How do we do it?
+Run the SQL contained in javascript-require-for-supabase.sql, and now you can use 'require()'.  Since you don't have access to a file system, though, you can't use npm install.  So we need to have a way to load those neato node_modules.  How do we do it?
 
 ## Method 1:  load from the web automatically
 This is the easiest (and preferred) method.
