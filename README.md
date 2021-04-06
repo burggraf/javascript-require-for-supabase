@@ -6,13 +6,11 @@ Import node js modules into plv8 postgresql
 const module_name = require(<url-or-module-name>, <autoload>);
 ```
 where
-```
-url-or-module-name: 
-either the public url of the node js module or a module name you've put into the plv8_js_modules table manually.
 
-autoload: 
-(optional) boolean:  true if you want this module to be loaded automatically when the plv8 extension starts up, otherwise false
-```
+* <url-or-module-name>: either the public url of the node js module or a module name you've put into the plv8_js_modules table manually.
+
+* <autoload>: (optional) boolean:  true if you want this module to be loaded automatically when the plv8 extension starts up, otherwise false
+
 Sample function:
 ```
 create or replace function test_underscore()
