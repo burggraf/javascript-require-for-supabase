@@ -1,7 +1,7 @@
 # javascript-require-for-supabase
 Import node js modules into plv8 postgresql
 
-## Quick Syntax:
+## Quick Syntax and Sample:
 ```
 const module_name = require(<url-or-module-name>, <autoload>);
 ```
