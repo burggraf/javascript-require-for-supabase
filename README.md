@@ -44,7 +44,7 @@ $$ language plv8;
 
 So the syntax is a little weird, but you'll get used to it.  You need to add a data type after any function parameters.  You need to add the return type after the function name (and parameters).  You need to delimit the function with $$ pairs.  You have to add "language plv8" at the end.  Not so bad.  Cut and paste from a template if you can't remember all that (like I can't.)
 
-Now, you've got all that JavaScript goodness flowing, and it hits you -- What?  I can't access all huge world of Node JS libraries?  What do you expect me to do -- write JavaScript from scratch like an animal?  Forget it!
+Now, you've got all that JavaScript goodness flowing, and it hits you -- What?  I can't access the huge world of Node JS libraries?  What do you expect me to do -- write JavaScript from scratch like an animal?  Forget it!
 
 Enter **javascript-require-for-supabase**.
 
