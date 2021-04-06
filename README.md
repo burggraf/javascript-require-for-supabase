@@ -7,8 +7,9 @@ const module_name = require(<url-or-module-name>, <autoload>);
 ```
 where
 ```
-*url-or-module-name* either the public url of the node js module or a module name you've put into the plv8_js_modules table manually.
-*autoload* (optional) is a boolean:  true if you want this module to be loaded automatically when the plv8 extension starts up, otherwise false
+url-or-module-name: either the public url of the node js module or a module name you've put into the plv8_js_modules table manually.
+
+autoload: (optional) boolean:  true if you want this module to be loaded automatically when the plv8 extension starts up, otherwise false
 ```
 ## Make writing Postgreqsql modules fun again
 Can you write JavaScript in your sleep?  Me too.
@@ -35,7 +36,7 @@ So the syntax is a little weird, but you'll get used to it.  You need to add a d
 
 Now, you've got all that JavaScript goodness flowing, and it hits you -- What?  I can't access all huge world of Node JS libraries?  What do you expect me to do -- write JavaScript from scratch like an animal?  Forget it!
 
-Enter *javascript-require-for-supabase*.
+Enter **javascript-require-for-supabase**.
 
 Run the SQL contained in javascript-require-for-supabase.sql, and now you can use 'require()'.  Since you don't have access to a file system, though you can't use npm install.  So we need to have a way to load those neato node_modules.  How do we do it?
 
@@ -70,7 +71,7 @@ The first time you call require(url) the following stuff happens:
 
 1.  If your requested module is cached, we return it from the cache.  Super fast!  Woohoo!  Otherwise...
 2.  We check to see if the url (or module name if you loaded it manually) exists in the plv8_js_modules table.  If it does, we load the source for the module from the database and then eval() it.  Yes, we're using eval(), and that's how this is all possible.  We know about the security vulnerabilities with eval() but in this case, it's a necessary evil.  If you've got a better way, hit me up on GitHub.
-3.  If the module isn't in our plv8_js_modules table, we use the http_get() function from pgsql-http (https://github.com/pramsey/pgsql-http) to load the source into a variable, then we store it in the plv8_js_modules for later.  Later when we need it, we can get it from the database, then cache it.
+3.  If the module isn't in our plv8_js_modules table, we use the http_get() function from [pgsql-http](https://github.com/pramsey/pgsql-http) to load the source into a variable, then we store it in the plv8_js_modules for later.  Later when we need it, we can get it from the database, then cache it.
 
 
 5.  
