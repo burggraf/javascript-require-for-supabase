@@ -72,7 +72,7 @@ select test_momentjs();
 Where do I find the url?  Hunt around on the library documentation page to find a CDN version of the library or look for documentation that shows how to load the library in HTML with a <SCRIPT> command.
 
 ## Method 2:  manually load the library into your plv8_js_modules table
-This isn't the ideal method, but you can do this on your own if you want.  Basically you load the source code for the module into the table.  But you need to deal with escaping the single-quotes and all that fun stuff.  Try Method 1 first, there's really no downside as long as you choose a compatibe library and you can access it from the internet the first time you use it.  See below for details on how all this works.
+This isn't the ideal method, but you can do this on your own if you want.  Basically you load the source code for the module into the table.  But you need to deal with escaping the single-quotes and all that fun stuff.  Try Method 1 first, there's really no downside as long as you choose a compatible library and you can access it from the internet the first time you use it.  See below for details on how all this works.
 
 ## How it works
 The first time you call require(url) the following stuff happens:
