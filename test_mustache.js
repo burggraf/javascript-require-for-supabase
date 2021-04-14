@@ -1,6 +1,6 @@
 create or replace function test_mustache()
 returns text as $$
-    const Mustache = require('https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.2.0/mustache.js', false);
+    const Mustache = require('https://unpkg.com/mustache@latest', false);
 
     const template = 'Welcome to Mustache, {{ name }}!'
 
