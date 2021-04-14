@@ -24,6 +24,14 @@ returns void as $$
         return module.exports;
     };
 
+    sql = function(sql_statement, args) {
+      if (args) {
+        return plv8.execute(sql_statement, args);
+      } else {
+        return plv8.execute(sql_statement);
+      }
+    };
+
     require = function(module, autoload) {
         if(moduleCache[module])
             return moduleCache[module];
