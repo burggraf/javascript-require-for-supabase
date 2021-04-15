@@ -95,13 +95,20 @@ If you call require(url, true) that "true" parameter means "autoload this module
 4.  ```alter database postgres set plv8.start_proc to plv8_require;```  (This needs to be run once and it's in the javascript-require-for-supabase.sql script.)
 5.  **plv8_js_modules** table (Again, this is in the javascript-require-for-supabase.sql script.)
 
-## Accessing the database from inside JavaScript
-You'll need to use plv8.execute like this:
+## BONUS FUNCTION: sql()
+### Accessing the database from inside JavaScript
+We've included a bonus function to streamline access to your Postgresql database.
 ```
-var json_result = plv8.execute('SELECT * FROM tbl');
-var num_affected = plv8.execute('DELETE FROM tbl WHERE price > $1', [ 1000 ]);
+<result> = sql(<sql_statement>, <optional arry of arguments>);
 ```
-SEE:  [plv8 documentation here](https://plv8.github.io/#database-access-via-spi)
+This maps directly to plv8.execute() -- SEE: [plv8 documentation here](https://plv8.github.io/#database-access-via-spi)
+
+Example usage:
+```
+var json_result = sql('SELECT * FROM tbl');
+var num_affected = sql('DELETE FROM tbl WHERE price > $1', [ 1000 ]);
+```
+
 
 ## Troubleshooting
 If you need to reload a module for some reason, just remove the module's entry from your **plv8_js_modules** table.  Or just wipe it out:  **delete from plv8_js_modules;**
