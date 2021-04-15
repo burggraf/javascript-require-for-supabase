@@ -11,6 +11,18 @@ create or replace function plv8_require()
 returns void as $$
     moduleCache = {};
 
+    // execute a Postgresql function
+    // i.e. exec('my_function',['parm1', 123, '{"item_name": "test json object"}'])
+    exec = function(function_name, parms) {
+      let tokens = '';
+      for (let i = 1; i <= parms.length; i++) {
+        tokens += (i > 1 ? ',' : '') + '$' + (i).toString();
+      }      
+      const result = plv8.execute(`select ${function_name}(${tokens})`, ...parms)[0][function_name];
+      // const result = tokens;
+      return (result);
+    }
+
     load = function(key, source) {
         var module = {exports: {}};
         try {
@@ -24,6 +36,8 @@ returns void as $$
         return module.exports;
     };
 
+    // execute a sql statement against the Postgresql database with optional args
+    // i.e. sql('select * from people where first_name = $1 and last_name = $2', ['John', 'Smith'])
     sql = function(sql_statement, args) {
       if (args) {
         return plv8.execute(sql_statement, args);
@@ -32,6 +46,9 @@ returns void as $$
       }
     };
 
+    // emulate node.js "require", with automatic download from the internet via CDN sites
+    // optional autoload (boolean) parameter allows the module to be preloaded later
+    // i.e. var myModule = require('https://some.cdn.com/module_content.js', true)
     require = function(module, autoload) {
         if(moduleCache[module])
             return moduleCache[module];
