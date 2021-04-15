@@ -95,11 +95,12 @@ If you call require(url, true) that "true" parameter means "autoload this module
 4.  ```alter database postgres set plv8.start_proc to plv8_require;```  (This needs to be run once and it's in the javascript-require-for-supabase.sql script.)
 5.  **plv8_js_modules** table (Again, this is in the javascript-require-for-supabase.sql script.)
 
-## BONUS FUNCTION: sql()
-### Accessing the database from inside JavaScript
+## BONUS FUNCTIONS
+### sql(sql_statement, arguments)
+#### Accessing the Postgresql database from inside JavaScript
 We've included a bonus function to streamline access to your Postgresql database.
 ```
-<result> = sql(<sql_statement>, <optional arry of arguments>);
+<result> = sql(<sql_statement>, <optional array of arguments>);
 ```
 This maps directly to plv8.execute() -- SEE: [plv8 documentation here](https://plv8.github.io/#database-access-via-spi)
 
@@ -109,6 +110,24 @@ var json_result = sql('SELECT * FROM tbl');
 var num_affected = sql('DELETE FROM tbl WHERE price > $1', [ 1000 ]);
 ```
 
+### exec(function_name, arguments)
+#### Execute a Postgresql function and return a result
+```
+<result> = exec(<function_name>, <optional array of arguments>);
+```
+
+To execute another Postgresql function that you've created, you need to call it via SQL with "select function_name(parm1, parm2, etc)".  This can get ugly and unwieldy, as shown below:
+**the ugly way**
+```
+const html_email = sql('select prepare_message(\'invitation to join org\', \'{"name": "Mark", "orgname": "Acme Corp", "url": "https://acme.com"}\')')[0].prepare_message;
+```
+Nobody should have to escape nested delimiters.  Enter **"exec"**, so you can call it like this:
+```
+const html_email = exec('prepare_message', ['invitation to join org', '{"name": "Mark", "orgname": "Acme Corp", "url": "https://acme.com"}']);
+```
+Just note: exec calls exactly two parameters:
+1.  the name of the function you want to call
+2.  an optional array of parameters you want to pass to the function
 
 ## Troubleshooting
 If you need to reload a module for some reason, just remove the module's entry from your **plv8_js_modules** table.  Or just wipe it out:  **delete from plv8_js_modules;**
