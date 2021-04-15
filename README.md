@@ -117,14 +117,25 @@ var num_affected = sql('DELETE FROM tbl WHERE price > $1', [ 1000 ]);
 ```
 
 To execute another Postgresql function that you've created, you need to call it via SQL with "select function_name(parm1, parm2, etc)".  This can get ugly and unwieldy, as shown below:
+
 **the ugly way**
 ```
 const html_email = sql('select prepare_message(\'invitation to join org\', \'{"name": "Mark", "orgname": "Acme Corp", "url": "https://acme.com"}\')')[0].prepare_message;
 ```
-Nobody should have to escape nested delimiters.  Enter **"exec"**, so you can call it like this:
+Nobody should have to escape nested delimiters.  Also notice the sql result is an array of results (with one result) with the result stuffed into a property with the name of the function.  Ugh!
+
+Calling with sql results in this JSON that requires that you add [0].function_name to the end of the call:
+```
+[{"prepare_message":"prepared message text goes here"}]
+```
+Too much work, and too ugly.
+
+Enter **"exec"**, so you can call it like this:
 ```
 const html_email = exec('prepare_message', ['invitation to join org', '{"name": "Mark", "orgname": "Acme Corp", "url": "https://acme.com"}']);
 ```
+The result is just the result of the function.  Much cleaner, much easier.
+
 Just note: exec calls exactly two parameters:
 1.  the name of the function you want to call
 2.  an optional array of parameters you want to pass to the function
