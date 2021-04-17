@@ -1,3 +1,7 @@
+# This is now deprecated and moved to here:  [SupaScript](https://github.com/burggraf/SupaScript)
+
+
+
 # javascript-require-for-supabase
 Import node js modules into plv8 postgresql from any location on the web, similar to [Deno](https://deno.land/).
 
